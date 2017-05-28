@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FriendSelectedDelegate.h"
 
-@interface MainVC : UIViewController <UITextViewDelegate>
+@interface MainVC : UIViewController <UITextViewDelegate, FriendSelectedDelegate>
 
 @end

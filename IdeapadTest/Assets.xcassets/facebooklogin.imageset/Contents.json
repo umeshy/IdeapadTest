@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Message Filled-500 (1).png",
+      "filename" : "facebooklogin.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "facebooklogin copy.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "facebooklogin copy 2.png",
       "scale" : "3x"
     }
   ],

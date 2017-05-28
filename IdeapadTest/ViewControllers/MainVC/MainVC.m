@@ -10,6 +10,7 @@
 #import "UIView+Genie.h"
 #import "SettingsVC.h"
 #import "Helper.h"
+#import "FriendProfileView.h"
 #import "UITextView+Placeholder.h"
 
 @interface MainVC ()
@@ -18,13 +19,14 @@
 @property(strong, nonatomic) UIImageView *groupImage;
 @property(strong, nonatomic) UIImageView *messageImage;
 @property(strong, nonatomic) NSMutableArray *friendsList;
-@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property(strong, nonatomic) UIView *fetchingFriendsBGView;
+@property (weak, nonatomic) IBOutlet UIButton *userNameButton;
 @property(strong, nonatomic) UIImageView *singlePersonImage;
 @property (weak, nonatomic) IBOutlet UIView *buttonLineView;
-@property (weak, nonatomic) IBOutlet UIButton *settingButton;
+@property (weak, nonatomic) IBOutlet UIButton *welcomeButton;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property(strong, nonatomic) UIImageView *singleMovingPersonImage;
+@property(strong, nonatomic) NSMutableArray *friendsListImageViews;
 @property (weak, nonatomic) IBOutlet UIScrollView *friendsListScrollingView;
 @end
 
@@ -36,8 +38,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self setupView];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 -(void) viewDidAppear:(BOOL)animated{
@@ -45,17 +50,17 @@
 }
 
 -(void) setupView {
+   
     self.messageTextView.delegate = self;
-    self.settingButton.hidden = YES;
     self.fetchingFriendsBGView = [[UIView alloc]initWithFrame:CGRectMake(  0
-                                                                         , (self.welcomeLabel.frame.origin.y + self.welcomeLabel.frame.size.height)
+                                                                         , (self.userNameButton.frame.origin.y + self.userNameButton.frame.size.height)
                                                                          , self.view.frame.size.width
-                                                                         , self.view.frame.size.height - (self.welcomeLabel.frame.origin.y + self.welcomeLabel.frame.size.height))];
+                                                                         , self.view.frame.size.height - (self.userNameButton.frame.origin.y + self.userNameButton.frame.size.height))];
     self.fetchingFriendsBGView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.fetchingFriendsBGView];
     
     float dimension = 40;
-    float fetchingY = 100;
+    float fetchingY = 150;
     float centerSpacing = 60;
     self.singleMovingPersonImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, dimension, dimension)];
     self.singleMovingPersonImage.center = CGPointMake(self.fetchingFriendsBGView.frame.size.width/2 - centerSpacing, fetchingY);
@@ -80,11 +85,11 @@
     
     self.fetchingLabel = [[UILabel alloc]initWithFrame:CGRectMake(
                                                                   0
-                                                                  , self.singlePersonImage.frame.origin.y + self.singlePersonImage.frame.size.height + 17
+                                                                  , self.singlePersonImage.frame.origin.y + self.singlePersonImage.frame.size.height + 22
                                                                   , self.view.frame.size.width
                                                                   , 40)];
     self.fetchingLabel.text = @"Getting friends list..";
-    self.fetchingLabel.font = [UIFont fontWithName:@"Avenir-Light" size:15];
+    self.fetchingLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:15];
     self.fetchingLabel.textAlignment = NSTextAlignmentCenter;
     self.fetchingLabel.hidden = YES;
     self.fetchingLabel.alpha = 0;
@@ -96,10 +101,11 @@
     [self.friendsList addObject:@"Katy"];
     [self.friendsList addObject:@"micky"];
     [self.friendsList addObject:@"Tom"];
+    self.friendsListImageViews = [[NSMutableArray alloc] init];
     
-    mailInitCenter = CGPointMake(-50, self.buttonLineView.frame.origin.y - 60);
-    mailRecivingCenter = CGPointMake(self.view.frame.size.width/2, self.buttonLineView.frame.origin.y - 60);
-    mailSendCenter = CGPointMake(self.view.frame.size.width+60, self.buttonLineView.frame.origin.y - 60);
+    mailInitCenter = CGPointMake(-50, self.view.frame.size.height*0.70);
+    mailRecivingCenter = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height*0.7);
+    mailSendCenter = CGPointMake(self.view.frame.size.width + 60, self.view.frame.size.height*0.7);
     self.messageImage = [[UIImageView alloc]initWithFrame:self.messageTextView.frame];
     self.messageImage.hidden = YES;
     self.mailImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
@@ -130,7 +136,7 @@
                 self.singleMovingPersonImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
             } completion:^(BOOL finished) {
                 if (finished) {
-                    UIImageView *doneImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+                    UIImageView *doneImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width*0.25, self.view.frame.size.width*0.25)];
                     doneImage.image = [UIImage imageNamed:@"done"];
                     doneImage.center = CGPointMake(self.fetchingFriendsBGView.frame.size.width/2, self.groupImage.center.y);
                     doneImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
@@ -149,7 +155,6 @@
                                 self.fetchingFriendsBGView.alpha = 0;
                             } completion:^(BOOL finished) {
                                 if (finished) {
-                                    self.settingButton.hidden = NO;
                                     [UIView setAnimationRepeatCount:0];
                                     [self.view.layer removeAllAnimations];
                                     [doneImage removeFromSuperview];
@@ -159,7 +164,6 @@
                             }];
                         }
                     }];
-                    
                 }
             }];
         }
@@ -167,22 +171,36 @@
 }
 
 - (void) populateFriends {
-    float unitX = 0;
+    float unitX = self.messageTextView.frame.origin.x;
+    NSInteger index = 0;
+    [self.friendsListImageViews removeAllObjects];
     for (NSString *imageName in self.friendsList) {
-        UIImageView *userImage = [[UIImageView alloc]initWithFrame:CGRectMake(unitX, 0, self.friendsListScrollingView.frame.size.height, self.friendsListScrollingView.frame.size.height)];
-        userImage.contentMode = UIViewContentModeScaleAspectFill;
-        userImage.clipsToBounds = YES;
-        userImage.image = [UIImage imageNamed:imageName];
-        userImage.layer.cornerRadius = self.friendsListScrollingView.frame.size.height/2;
-        userImage.layer.borderWidth = 2;
-        userImage.layer.borderColor = [UIColor colorWithRed:0.69 green:0.69 blue:0.69 alpha:1.0].CGColor;
-        unitX = unitX + self.friendsListScrollingView.frame.size.height + 7;
+        FriendProfileView *userImage = [[FriendProfileView alloc]initWithFrame:CGRectMake(unitX, 0, self.friendsListScrollingView.frame.size.height, self.friendsListScrollingView.frame.size.height) image:[UIImage imageNamed:imageName]];
+        userImage.delegate = self;
+        [userImage setIndex:index];
+        [userImage selected:NO];
+        userImage.tag = index;
+        index++;
+        unitX = unitX + self.friendsListScrollingView.frame.size.height + 2;
         userImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
         [self.friendsListScrollingView addSubview:userImage];
         [self.friendsListScrollingView setContentSize:CGSizeMake(unitX, self.friendsListScrollingView.frame.size.height)];
         [self scalUp:userImage duration:0.4];
+        [self.friendsListImageViews addObject:userImage];
     }
+    unitX = unitX + self.messageTextView.frame.origin.x;
+    [self.friendsListScrollingView setContentSize:CGSizeMake(unitX, self.friendsListScrollingView.frame.size.height)];
     [self.friendsList removeAllObjects];
+}
+
+-(void) frienSelected:(NSInteger)index{
+    for (FriendProfileView *userImage in self.friendsListImageViews) {
+        if (index == userImage.tag) {
+            [userImage selected:YES];
+        }else{
+            [userImage selected:NO];
+        }
+    }
 }
 
 - (void)scalUp:(UIView*)view duration:(float)duration{
@@ -274,6 +292,22 @@
         return NO;
     }
     return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.view.center = CGPointMake(self.view.center.x, self.view.center.y - 50);
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.view.center = CGPointMake(self.view.center.x, self.view.center.y + 50);
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 - (IBAction)onMainScreenTapped:(id)sender {

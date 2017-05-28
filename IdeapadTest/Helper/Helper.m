@@ -7,6 +7,7 @@
 //
 
 #import "Helper.h"
+#import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioToolbox.h>
 
 @implementation Helper
@@ -29,4 +30,5 @@
             break;
     }
 }
+
 @end

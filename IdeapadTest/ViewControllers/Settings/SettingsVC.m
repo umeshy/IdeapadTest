@@ -20,20 +20,25 @@
     // Do any additional setup after loading the view.
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+
 - (IBAction)onBackPressed:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)onLogoutPressed:(id)sender {
     
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Sure you want to Logout?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *userYESAction = [UIAlertAction actionWithTitle:@"YES"
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Do you want to logout?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *userYESAction = [UIAlertAction actionWithTitle:@"OK"
                                                             style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                                                                 NSLog(@"Logged Out!");
                                                                 ViewController *VC = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
                                                                 [self presentViewController:VC animated:YES completion:nil];
                                                             }];
-    UIAlertAction *userNOAction = [UIAlertAction actionWithTitle:@"NO"
+    UIAlertAction *userNOAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
                                                                NSLog(@"Logged Canceled!");
                                                            }];

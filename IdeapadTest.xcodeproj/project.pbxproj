@@ -18,6 +18,7 @@
 		FC14C20C1ED6A20A00D2E385 /* UIView+Genie.m in Sources */ = {isa = PBXBuildFile; fileRef = FC14C20B1ED6A20A00D2E385 /* UIView+Genie.m */; };
 		FC14C20F1ED6B70900D2E385 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FC14C20E1ED6B70900D2E385 /* UITextView+Placeholder.m */; };
 		FC14C2161ED799DE00D2E385 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = FC14C2151ED799DE00D2E385 /* Helper.m */; };
+		FC14C21A1EDA645000D2E385 /* FriendProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC14C2191EDA645000D2E385 /* FriendProfileView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,9 @@
 		FC14C20E1ED6B70900D2E385 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextView+Placeholder.m"; path = "3rdPartyModules/UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		FC14C2141ED799DE00D2E385 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Helper.h; path = Helper/Helper.h; sourceTree = "<group>"; };
 		FC14C2151ED799DE00D2E385 /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Helper.m; path = Helper/Helper.m; sourceTree = "<group>"; };
+		FC14C2181EDA645000D2E385 /* FriendProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendProfileView.h; path = CustomViews/FriendProfileView.h; sourceTree = "<group>"; };
+		FC14C2191EDA645000D2E385 /* FriendProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendProfileView.m; path = CustomViews/FriendProfileView.m; sourceTree = "<group>"; };
+		FC14C21B1EDA715100D2E385 /* FriendSelectedDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendSelectedDelegate.h; path = Delegate/FriendSelectedDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,7 @@
 		FC14C1DF1ED3F4A700D2E385 /* IdeapadTest */ = {
 			isa = PBXGroup;
 			children = (
+				FC14C2171EDA641700D2E385 /* CustomViews */,
 				FC14C2131ED799B400D2E385 /* Helper */,
 				FC14C2061ED6A17000D2E385 /* 3rdPartyModules */,
 				FC14C1FF1ED4990000D2E385 /* Layouts */,
@@ -135,6 +140,7 @@
 			children = (
 				FC14C1E31ED3F4A700D2E385 /* AppDelegate.h */,
 				FC14C1E41ED3F4A700D2E385 /* AppDelegate.m */,
+				FC14C21B1EDA715100D2E385 /* FriendSelectedDelegate.h */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -166,6 +172,15 @@
 				FC14C2151ED799DE00D2E385 /* Helper.m */,
 			);
 			name = Helper;
+			sourceTree = "<group>";
+		};
+		FC14C2171EDA641700D2E385 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				FC14C2181EDA645000D2E385 /* FriendProfileView.h */,
+				FC14C2191EDA645000D2E385 /* FriendProfileView.m */,
+			);
+			name = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +257,7 @@
 			files = (
 				FC14C1E81ED3F4A700D2E385 /* ViewController.m in Sources */,
 				FC14C20F1ED6B70900D2E385 /* UITextView+Placeholder.m in Sources */,
+				FC14C21A1EDA645000D2E385 /* FriendProfileView.m in Sources */,
 				FC14C1E51ED3F4A700D2E385 /* AppDelegate.m in Sources */,
 				FC14C2161ED799DE00D2E385 /* Helper.m in Sources */,
 				FC14C2021ED4DF9500D2E385 /* MainVC.m in Sources */,
@@ -408,6 +424,7 @@
 				FC14C1F61ED3F4A700D2E385 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

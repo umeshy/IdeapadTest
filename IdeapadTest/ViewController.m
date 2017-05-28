@@ -34,6 +34,10 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     self.facebookButton.hidden = NO;
     [self setupView];
@@ -43,7 +47,7 @@
     
     facebookAnimStartCenter = self.facebookButton.center;
     facebookAnimFinaleCenter = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2);
-    facebookFinaleRect = CGRectMake(0, 0, self.view.frame.size.width/3, self.view.frame.size.width/3);
+    facebookFinaleRect = CGRectMake(0, 0, self.view.frame.size.width*0.25, self.view.frame.size.width*0.25);
     
     self.facebookLoginAnimViewBG = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.facebookLoginAnimViewBG.backgroundColor = [UIColor whiteColor];
