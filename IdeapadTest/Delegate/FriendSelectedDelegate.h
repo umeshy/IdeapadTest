@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @protocol FriendSelectedDelegate <NSObject>
-- (void) frienSelected:(NSInteger)index;
+- (void) friendSelected:(NSInteger)index;
 @end

@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *userNameButton;
 @property(strong, nonatomic) UIImageView *singlePersonImage;
 @property (weak, nonatomic) IBOutlet UIView *buttonLineView;
-@property (weak, nonatomic) IBOutlet UIButton *welcomeButton;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property(strong, nonatomic) UIImageView *singleMovingPersonImage;
 @property(strong, nonatomic) NSMutableArray *friendsListImageViews;
@@ -191,9 +190,11 @@
     unitX = unitX + self.messageTextView.frame.origin.x;
     [self.friendsListScrollingView setContentSize:CGSizeMake(unitX, self.friendsListScrollingView.frame.size.height)];
     [self.friendsList removeAllObjects];
+    //Set first default friends selected
+    [self friendSelected:0];
 }
 
--(void) frienSelected:(NSInteger)index{
+-(void) friendSelected:(NSInteger)index{
     for (FriendProfileView *userImage in self.friendsListImageViews) {
         if (index == userImage.tag) {
             [userImage selected:YES];

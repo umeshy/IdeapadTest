@@ -39,7 +39,7 @@
 }
 
 - (void)viewSelected {
-    [self.delegate frienSelected:ViewIndex];
+    [self.delegate friendSelected:ViewIndex];
 }
 
 - (void)selected:(BOOL)flag {
