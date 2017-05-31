@@ -31,8 +31,10 @@
 
 @implementation MainVC{
     CGPoint mailInitCenter;
-    CGPoint mailRecivingCenter;
     CGPoint mailSendCenter;
+    CGPoint mailRecivingCenter;
+    CGPoint messageTextViewInitCenter;
+    CGPoint messageTextViewKeyboardCenter;
 }
 
 - (void)viewDidLoad {
@@ -45,11 +47,16 @@
 }
 
 -(void) viewDidAppear:(BOOL)animated{
+    
     [self showFriendsfetchingAnimation];
 }
 
 -(void) setupView {
    
+    self.messageTextView.frame = CGRectMake(self.userNameButton.frame.origin.x, 0, self.view.frame.size.width - (self.userNameButton.frame.origin.x*2), 150);
+    messageTextViewInitCenter = CGPointMake(self.messageTextView.center.x, self.friendsListScrollingView.frame.origin.y + self.friendsListScrollingView.frame.size.height + self.view.frame.size.height*0.15);
+    messageTextViewKeyboardCenter = CGPointMake(self.messageTextView.center.x, self.friendsListScrollingView.frame.origin.y + self.friendsListScrollingView.frame.size.height + self.view.frame.size.height*0.25);
+    self.messageTextView.center = messageTextViewInitCenter;
     self.messageTextView.delegate = self;
     self.fetchingFriendsBGView = [[UIView alloc]initWithFrame:CGRectMake(  0
                                                                          , (self.userNameButton.frame.origin.y + self.userNameButton.frame.size.height)
@@ -59,7 +66,7 @@
     [self.view addSubview:self.fetchingFriendsBGView];
     
     float dimension = 40;
-    float fetchingY = 150;
+    float fetchingY = self.fetchingFriendsBGView.frame.size.height - self.view.frame.size.height/2;
     float centerSpacing = 60;
     self.singleMovingPersonImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, dimension, dimension)];
     self.singleMovingPersonImage.center = CGPointMake(self.fetchingFriendsBGView.frame.size.width/2 - centerSpacing, fetchingY);
@@ -84,11 +91,11 @@
     
     self.fetchingLabel = [[UILabel alloc]initWithFrame:CGRectMake(
                                                                   0
-                                                                  , self.singlePersonImage.frame.origin.y + self.singlePersonImage.frame.size.height + 22
+                                                                  , self.singlePersonImage.frame.origin.y + self.singlePersonImage.frame.size.height + 35
                                                                   , self.view.frame.size.width
                                                                   , 40)];
     self.fetchingLabel.text = @"Getting friends list..";
-    self.fetchingLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:15];
+    self.fetchingLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:20];
     self.fetchingLabel.textAlignment = NSTextAlignmentCenter;
     self.fetchingLabel.hidden = YES;
     self.fetchingLabel.alpha = 0;
@@ -135,7 +142,7 @@
                 self.singleMovingPersonImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
             } completion:^(BOOL finished) {
                 if (finished) {
-                    UIImageView *doneImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width*0.25, self.view.frame.size.width*0.25)];
+                    UIImageView *doneImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width*0.2, self.view.frame.size.width*0.2)];
                     doneImage.image = [UIImage imageNamed:@"done"];
                     doneImage.center = CGPointMake(self.fetchingFriendsBGView.frame.size.width/2, self.groupImage.center.y);
                     doneImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
@@ -148,7 +155,6 @@
                         self.fetchingLabel.alpha = 0;
                     } completion:^(BOOL finished) {
                         if (finished) {
-                            [Helper playSound:0];
                             [UIView animateWithDuration:0.6 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
                                 doneImage.transform = CGAffineTransformMakeScale(0.1, 0.1);
                                 self.fetchingFriendsBGView.alpha = 0;
@@ -170,7 +176,7 @@
 }
 
 - (void) populateFriends {
-    float unitX = self.messageTextView.frame.origin.x;
+    float unitX = self.userNameButton.frame.origin.x;
     NSInteger index = 0;
     [self.friendsListImageViews removeAllObjects];
     for (NSString *imageName in self.friendsList) {
@@ -234,6 +240,7 @@
                     UIGraphicsBeginImageContext(CGSizeMake(self.messageTextView.frame.size.width,self.messageTextView.frame.size.height));
                     CGContextRef context = UIGraphicsGetCurrentContext();
                     self.messageImage.hidden = NO;
+                    self.messageImage.center = self.messageTextView.center;
                     [self.messageTextView.layer renderInContext:context];
                     self.messageImage.image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
@@ -273,11 +280,15 @@
     }];
 }
 
-- (IBAction)onPushMessagePressed:(id)sender {
+- (void)sendMessage {
     if ([[self.messageTextView.text stringByTrimmingCharactersInSet:
           [NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         [self showMessagePushAnimation];
     }
+}
+
+- (IBAction)onPushMessagePressed:(id)sender {
+    [self sendMessage];
 }
 
 - (IBAction)onSettingsPressed:(id)sender {
@@ -287,7 +298,6 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text {
-    
     if([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
         return NO;
@@ -296,19 +306,37 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
-    [UIView animateWithDuration:0.4 animations:^{
-        self.view.center = CGPointMake(self.view.center.x, self.view.center.y - 50);
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.center = CGPointMake(self.view.center.x, self.view.center.y - self.view.frame.size.height*0.36);
+        self.messageTextView.center = messageTextViewKeyboardCenter;
     } completion:^(BOOL finished) {
         
     }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView{
-    [UIView animateWithDuration:0.4 animations:^{
-        self.view.center = CGPointMake(self.view.center.x, self.view.center.y + 50);
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.center = CGPointMake(self.view.center.x, self.view.center.y + self.view.frame.size.height*0.36);
+        self.messageTextView.center = messageTextViewInitCenter;
     } completion:^(BOOL finished) {
         
     }];
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (NSArray *)keyCommands
+{
+    return @[ [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:0 action:@selector(enterPressed)] ];
+}
+
+- (void)enterPressed
+{
+    NSLog(@"Enter pressed");
+    [self sendMessage];
 }
 
 - (IBAction)onMainScreenTapped:(id)sender {

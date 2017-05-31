@@ -47,7 +47,7 @@
     
     facebookAnimStartCenter = self.facebookButton.center;
     facebookAnimFinaleCenter = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2);
-    facebookFinaleRect = CGRectMake(0, 0, self.view.frame.size.width*0.25, self.view.frame.size.width*0.25);
+    facebookFinaleRect = CGRectMake(0, 0, self.view.frame.size.width*0.2, self.view.frame.size.width*0.2);
     
     self.facebookLoginAnimViewBG = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.facebookLoginAnimViewBG.backgroundColor = [UIColor whiteColor];
